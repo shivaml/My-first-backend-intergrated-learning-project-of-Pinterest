@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create Pin - Pinterest</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 32px;
+            background: white;
+            border-bottom: 1px solid #e1e1e1;
+        }
+
+        .logo {
+            color: #e60023;
+            font-weight: 900;
+            font-size: 24px;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            margin-left: 16px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        .nav-links a:hover {
+            background-color: #efefef;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 36px;
+            border-radius: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            width: 440px;
+        }
+
+        h2 {
+            margin: 0 0 20px;
+            font-size: 24px;
+            color: #111;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 90px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #e60023;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #ad081b;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #777;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <a href="/feed" class="logo">Pinterest</a>
+        <div class="nav-links">
+            <a href="/profile">My Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <div class="card">
+            <h2>Create a New Pin</h2>
+            <form action="/create-pin" method="POST" enctype="multipart/form-data">
+                <div class="input-group">
+                    <label>Title</label>
+                    <input type="text" name="title" placeholder="Add a title" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Choose Image from Laptop</label>
+                    <input type="file" name="image" accept="image/*" required>
+                    <div class="hint">Upload any image file (.jpg, .png, .webp) up to 10MB</div>
+                </div>
+
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea name="description" placeholder="Add a detailed description"></textarea>
+                </div>
+
+                <button type="submit">Publish Pin</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

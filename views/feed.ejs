@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Explore - Pinterest</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 32px;
+            background: white;
+            border-bottom: 1px solid #e1e1e1;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            color: #e60023;
+            font-weight: 900;
+            font-size: 24px;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            margin-left: 16px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        .nav-links a:hover {
+            background-color: #efefef;
+        }
+
+        .btn-create {
+            background-color: #e60023 !important;
+            color: white !important;
+        }
+
+        .btn-create:hover {
+            background-color: #ad081b !important;
+        }
+
+        /* Pinterest Masonry Columns */
+        .feed-container {
+            max-width: 1300px;
+            margin: 24px auto;
+            padding: 0 16px;
+        }
+
+        .columns {
+            column-count: 4;
+            column-gap: 20px;
+        }
+
+        @media (max-width: 1000px) {
+            .columns {
+                column-count: 3;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .columns {
+                column-count: 2;
+            }
+        }
+
+        .pin-item {
+            break-inside: avoid;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .pin-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .pin-item img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .pin-content {
+            padding: 12px;
+        }
+
+        .pin-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #111;
+            margin: 0 0 6px;
+        }
+
+        .pin-desc {
+            font-size: 13px;
+            color: #666;
+            margin: 0 0 10px;
+            line-height: 1.4;
+        }
+
+        .author {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .author img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .author span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #444;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Navbar -->
+    <div class="navbar">
+        <a href="/feed" class="logo">Pinterest</a>
+        <div class="nav-links">
+            <a href="/create-pin" class="btn-create">+ Create Pin</a>
+            <a href="/profile">My Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Feed Container -->
+    <div class="feed-container">
+        <% if (posts.length===0) { %>
+            <div style="text-align: center; padding: 60px;">
+                <h2>No pins on the feed yet!</h2>
+                <p>Be the first to publish a pin to the community.</p>
+                <a href="/create-pin" style="color: #e60023; font-weight: bold;">+ Create Pin</a>
+            </div>
+            <% } else { %>
+                <div class="columns">
+                    <% posts.forEach(function(post) { %>
+                        <div class="pin-item">
+                            <img src="<%= post.image %>" alt="<%= post.title %>">
+                            <div class="pin-content">
+                                <div class="pin-title">
+                                    <%= post.title %>
+                                </div>
+                                <form action="/save/<%= post._id %>" method="POST" style="margin-top: 8px;">
+                                    <button type="submit" style="
+    background-color: #e60023;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;">
+                                        Save Pin
+                                    </button>
+                                </form>
+                                <% if (post.description) { %>
+                                    <div class="pin-desc">
+                                        <%= post.description %>
+                                    </div>
+                                    <% } %>
+
+                                        <!-- Author Info -->
+                                        <% if (post.user) { %>
+                                            <div class="author">
+                                                <img src="<%= post.user.profileImage %>" alt="avatar">
+                                                <span>
+                                                    <%= post.user.name %>
+                                                </span>
+                                            </div>
+                                            <% } %>
+                            </div>
+                        </div>
+                        <% }); %>
+                </div>
+                <% } %>
+    </div>
+
+</body>
+
+</html>

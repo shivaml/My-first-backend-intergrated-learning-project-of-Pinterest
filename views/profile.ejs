@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <%= user.name %> (@<%= user.username %>) - Pinterest
+    </title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 32px;
+            background: white;
+            border-bottom: 1px solid #e1e1e1;
+        }
+
+        .logo {
+            color: #e60023;
+            font-weight: 900;
+            font-size: 24px;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            margin-left: 16px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        .nav-links a:hover {
+            background-color: #efefef;
+        }
+
+        .btn-create {
+            background-color: #e60023 !important;
+            color: white !important;
+        }
+
+        .btn-create:hover {
+            background-color: #ad081b !important;
+        }
+
+        .profile-header {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            margin: 8px 0 4px;
+            font-size: 28px;
+        }
+
+        p.handle {
+            color: #767676;
+            margin: 0 0 16px;
+        }
+
+        /* Pinterest Pin Grid */
+        .pins-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .pin-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s;
+        }
+
+        .pin-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .pin-card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .pin-card .pin-info {
+            padding: 12px;
+        }
+
+        .pin-card h4 {
+            margin: 0 0 4px;
+            font-size: 16px;
+        }
+
+        .pin-card p {
+            margin: 0;
+            color: #666;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Navbar -->
+    <div class="navbar">
+        <a href="/feed" class="logo">Pinterest</a>
+        <div class="nav-links">
+            <a href="/feed">Explore Feed</a>
+            <a href="/create-pin" class="btn-create">+ Create Pin</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <img src="<%= user.profileImage %>" alt="Avatar" class="avatar">
+        <h1>
+            <%= user.name %>
+        </h1>
+        <p class="handle">@<%= user.username %>
+        </p>
+    </div>
+
+    <!-- User's Pins Grid -->
+    <div class="pins-container">
+        <h3 style="margin-bottom: 16px;">Created Pins (<%= user.posts.length %>)</h3>
+
+        <% if (user.posts.length===0) { %>
+            <p style="color: #777;">No pins created yet. Click "+ Create Pin" above to share your first idea!</p>
+            <% } else { %>
+                <div class="grid">
+                    <% user.posts.forEach(function(pin) { %>
+                        <div class="pin-card">
+                            <img src="<%= pin.image %>" alt="<%= pin.title %>">
+                            <div class="pin-info">
+                                <h4>
+                                    <%= pin.title %>
+                                </h4>
+                                <% if (pin.description) { %>
+                                    <p>
+                                        <%= pin.description %>
+                                    </p>
+                                    <% } %>
+                                        <form action="/delete-pin/<%= pin._id %>" method="POST"
+                                            style="margin-top: 10px;">
+                                            <button type="submit"
+                                                onclick="return confirm('Are you sure you want to delete this pin?')"
+                                                style="
+                                        background: transparent;
+                                        color: #e60023;
+                                        border: 1px solid #e60023;
+                                        border-radius: 12px;
+                                        padding: 4px 10px;
+                                        font-size: 11px;
+                                        font-weight: 600;
+                                        cursor: pointer;">
+                                                Delete Pin
+                                            </button>
+                                        </form>
+                            </div>
+                        </div>
+                        <% }); %>
+                </div>
+                <% } %>
+    </div>
+
+    <!-- Saved Pins Grid -->
+    <div class="pins-container" style="margin-top: 40px;">
+        <h3 style="margin-bottom: 16px;">Saved Pins (<%= user.saved.length %>)</h3>
+
+        <% if (user.saved.length===0) { %>
+            <p style="color: #777;">No saved pins yet. Explore the feed and click "Save Pin"!</p>
+            <% } else { %>
+                <div class="grid">
+                    <% user.saved.forEach(function(pin) { %>
+                        <div class="pin-card">
+                            <img src="<%= pin.image %>" alt="<%= pin.title %>">
+                            <div class="pin-info">
+                                <h4>
+                                    <%= pin.title %>
+                                </h4>
+                                <% if (pin.description) { %>
+                                    <p>
+                                        <%= pin.description %>
+                                    </p>
+                                    <% } %>
+                            </div>
+                        </div>
+                        <% }); %>
+                </div>
+                <% } %>
+    </div>
+
+</body>
+
+</html>
